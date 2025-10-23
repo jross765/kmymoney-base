@@ -2,7 +2,7 @@ package org.kmymoney.base.basetypes.complex;
 
 public class InvalidQualifSecCurrTypeException extends RuntimeException {
 
-    private static final long serialVersionUID = -1204788572820875195L;
+	private static final long serialVersionUID = -1204788572820875195L;
 
     // ---------------------------------------------------------------
     
