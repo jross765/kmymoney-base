@@ -27,6 +27,8 @@ None (not in this module).
 ### V. 0.5 &rarr; 0.6
 * `FixedPointNumber`: Ironed out some inconsistencies: Some methods would change the (value of the) object itself, some others would not and instead generate a new one. Now, every calc-operation changes the (value of the) object itself. 
 
+  **CAUTION: This means that, as opposed to many (all?) other `number`-based Java classes, `FixedPointNumber` is *not* immutable.** Having it that way is, de facto, less of a *design* decision and more of a tribute to the *history* of the project `JGnuCashLib(NTools)` and `JKMyMoneyLibNTools` (and there are other things to say about this class, but let's not digress...).
+
   This admittedly leads to less-than-beautiful code in the other modules, because you now have to use the method `copy()` a lot of times, but we had to do so before the changes anyway here and there, and at least it's consistent now.
 
 * Better test coverage: Now, I feel much better about it.

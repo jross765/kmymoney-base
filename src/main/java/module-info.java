@@ -1,4 +1,5 @@
 module kmymoney.base {
+
 	requires static org.slf4j;
 	requires java.desktop;
 	
@@ -7,4 +8,5 @@ module kmymoney.base {
 	exports org.kmymoney.base.basetypes.simple;
 	exports org.kmymoney.base.basetypes.complex;
 	exports org.kmymoney.base.tuples;
+
 }
