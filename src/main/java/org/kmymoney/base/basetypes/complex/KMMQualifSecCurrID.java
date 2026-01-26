@@ -1,5 +1,9 @@
 package org.kmymoney.base.basetypes.complex;
 
+import java.util.Currency;
+
+import org.kmymoney.base.basetypes.simple.KMMIDNotSetException;
+import org.kmymoney.base.basetypes.simple.KMMSecID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +43,51 @@ public class KMMQualifSecCurrID {
 
 		this.type = type;
 		setCode(code.trim());
+	}
+
+	public KMMQualifSecCurrID(KMMSecID secID) throws KMMIDNotSetException {
+		if ( secID == null )
+			throw new IllegalArgumentException("argument <secID> is null");
+
+		if ( ! secID.isSet() )
+			throw new IllegalArgumentException("argument <secID> is not set");
+
+		setType(Type.SECURITY);
+		setCode(secID.get());
+	}
+
+	public KMMQualifSecCurrID(KMMQualifSecID secID) throws KMMIDNotSetException {
+		if ( secID == null )
+			throw new IllegalArgumentException("argument <secID> is null");
+
+		if ( ! secID.isSet() )
+			throw new IllegalArgumentException("argument <secID> is not set");
+
+		setType(Type.SECURITY);
+		setCode(secID.getCode());
+	}
+
+	public KMMQualifSecCurrID(KMMQualifCurrID currID) {
+		if ( currID == null )
+			throw new IllegalArgumentException("argument <currID> is null");
+
+		if ( ! currID.isSet() )
+			throw new IllegalArgumentException("argument <currID> is not set");
+
+		setType(Type.CURRENCY);
+		setCode(currID.getCode());
+	}
+
+	public KMMQualifSecCurrID(Currency curr) {
+
+		if ( curr == null )
+			throw new IllegalArgumentException("argument <curr> is null");
+
+		if ( curr.getSymbol().equals("") )
+			throw new IllegalArgumentException("argument <curr> is empty");
+
+		setType(Type.CURRENCY);
+		setCode(curr.getSymbol());
 	}
 
     // ---------------------------------------------------------------

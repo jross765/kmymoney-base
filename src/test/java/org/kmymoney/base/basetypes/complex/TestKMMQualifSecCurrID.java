@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
+import org.kmymoney.base.basetypes.simple.KMMSecID;
 
 import junit.framework.JUnit4TestAdapter;
 
@@ -143,7 +144,7 @@ public class TestKMMQualifSecCurrID {
 	}
 
 	@Test
-	public void test05() throws Exception {
+	public void test05_0() throws Exception {
 		KMMQualifSecCurrID secCurr1 = new KMMQualifSecCurrID(KMMQualifSecCurrID.Type.CURRENCY, "EUR");
 		KMMQualifSecCurrID secCurr2 = new KMMQualifSecCurrID(KMMQualifSecCurrID.Type.SECURITY, "E000001");
 		KMMQualifSecCurrID curr1    = new KMMQualifCurrID("EUR");
@@ -158,4 +159,33 @@ public class TestKMMQualifSecCurrID {
 		assertNotEquals(secCurr2.toStringLong(), sec2.toString()); // sic
 	}
 
+
+	@Test
+	public void test05_1_1() throws Exception {
+		KMMSecID secID = new KMMSecID("E000001");
+		
+		KMMQualifSecCurrID cmdtyCurrID = new KMMQualifSecCurrID(secID);
+		assertEquals(KMMQualifSecCurrID.Type.SECURITY, cmdtyCurrID.getType());
+		assertEquals("E000001", cmdtyCurrID.getCode());
+	}
+
+	@Test
+	public void test05_1_2() throws Exception {
+		KMMQualifSecID secID = KMMQualifSecID.parse("SECURITY:E000001");
+		assertEquals(KMMQualifSecCurrID.Type.SECURITY, secID.getType());
+		
+		KMMQualifSecCurrID cmdtyCurrID = new KMMQualifSecCurrID(secID);
+		assertEquals(KMMQualifSecCurrID.Type.SECURITY, cmdtyCurrID.getType());
+		assertEquals("E000001", cmdtyCurrID.getCode());
+	}
+
+	@Test
+	public void test05_2() throws Exception {
+		KMMQualifCurrID currID = new KMMQualifCurrID("JPY");
+		assertEquals(KMMQualifSecCurrID.Type.CURRENCY, currID.getType());
+		
+		KMMQualifSecCurrID cmdtyCurrID = new KMMQualifSecCurrID(currID);
+		assertEquals(KMMQualifSecCurrID.Type.CURRENCY, cmdtyCurrID.getType());
+		assertEquals("JPY", cmdtyCurrID.getCode());
+	}	
 }
