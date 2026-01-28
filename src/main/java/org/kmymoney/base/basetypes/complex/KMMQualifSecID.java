@@ -41,16 +41,15 @@ public class KMMQualifSecID extends KMMQualifSecCurrID {
 		try {
 			setSecID(secIDStr);
 		} catch (KMMIDNotSetException e) {
-			LOGGER.error("Security ID cannot be set from '" + secIDStr + "'");
+			LOGGER.error("KMMQualifSecID: Security ID cannot be set from '" + secIDStr + "'");
 			throw new IllegalArgumentException("Security ID cannot be set from '" + secIDStr + "'");
 		}
 	}
 
-	public KMMQualifSecID(KMMQualifSecCurrID secCurrID)
-			{
-		super(Type.SECURITY, secCurrID.getCode());
+	public KMMQualifSecID(KMMQualifSecCurrID secCurrID) {
+		super(secCurrID.getType(), secCurrID.getCode());
 
-		if ( getType() != Type.SECURITY )
+		if ( secCurrID.getType() != Type.SECURITY )
 			throw new InvalidQualifSecCurrTypeException();
 
 		init();
@@ -60,7 +59,7 @@ public class KMMQualifSecID extends KMMQualifSecCurrID {
 			setSecID(code);
 		} catch (KMMIDNotSetException e) {
 			LOGGER.debug("KMMQualifSecID: Could not set Security-ID from '" + code + "'");
-			throw new IllegalArgumentException("KMMQualifSecID: Could not set Security-ID from '" + code + "'");
+			throw new IllegalArgumentException("Security ID cannot be set from '" + code + "'");
 		}
 	}
 
@@ -94,7 +93,7 @@ public class KMMQualifSecID extends KMMQualifSecCurrID {
 			throw new InvalidQualifSecCurrTypeException();
 
 		if ( secID == null )
-			throw new IllegalArgumentException("Argument currency is null");
+			throw new IllegalArgumentException("Argument <secID> is null");
 
 		this.secID = secID;
 	}
@@ -119,10 +118,10 @@ public class KMMQualifSecID extends KMMQualifSecCurrID {
 	public static KMMQualifSecID parse(String str)
 			throws InvalidQualifSecCurrIDException {
 		if ( str == null )
-			throw new IllegalArgumentException("Argument string is null");
+			throw new IllegalArgumentException("Argument <str> is null");
 
 		if ( str.equals("") )
-			throw new IllegalArgumentException("Argument string is empty");
+			throw new IllegalArgumentException("Argument <str> is empty");
 
 		KMMQualifSecID result = new KMMQualifSecID();
 
@@ -143,7 +142,7 @@ public class KMMQualifSecID extends KMMQualifSecCurrID {
 				throw new InvalidQualifSecCurrIDException();
 			}
 		} else {
-			LOGGER.error("parse: Unknown security/currency type '" + typeStr + "'");
+			LOGGER.error("parse: Unknown security type '" + typeStr + "'");
 			throw new InvalidQualifSecCurrTypeException();
 		}
 
@@ -181,7 +180,7 @@ public class KMMQualifSecID extends KMMQualifSecCurrID {
 	}
 
     // ---------------------------------------------------------------
-    
+
     @Override
     public String toString() {
     	return toStringShort();

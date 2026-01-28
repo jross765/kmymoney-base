@@ -17,6 +17,7 @@ public class TestKMMSpltID {
 		junit.textui.TestRunner.run(suite());
 	}
 
+	@SuppressWarnings("exports")
 	public static junit.framework.Test suite() {
 		return new JUnit4TestAdapter(TestKMMSpltID.class);
 	}
@@ -42,7 +43,7 @@ public class TestKMMSpltID {
 		try {
 			kmmID.set(-12);
 			assertEquals(2, 1);
-		} catch (Exception InvalidKMMWPIDException) {
+		} catch (Exception InvalidKMMSpltIDException) {
 			// Muss Exception werfen, wenn er hier landet, ist es richtig
 			assertEquals(1, 1);
 		}
@@ -53,7 +54,7 @@ public class TestKMMSpltID {
 		try {
 			kmmID.set(10000);
 			assertEquals(2, 1);
-		} catch (Exception InvalidKMMWPIDException) {
+		} catch (Exception InvalidKMMSpltIDException) {
 			// Muss Exception werfen, wenn er hier landet, ist es richtig
 			assertEquals(1, 1);
 		}

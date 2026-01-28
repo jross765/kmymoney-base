@@ -17,6 +17,7 @@ public class TestKMMTrxID {
 		junit.textui.TestRunner.run(suite());
 	}
 
+	@SuppressWarnings("exports")
 	public static junit.framework.Test suite() {
 		return new JUnit4TestAdapter(TestKMMTrxID.class);
 	}

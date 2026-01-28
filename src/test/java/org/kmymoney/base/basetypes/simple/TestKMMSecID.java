@@ -17,6 +17,7 @@ public class TestKMMSecID {
 		junit.textui.TestRunner.run(suite());
 	}
 
+	@SuppressWarnings("exports")
 	public static junit.framework.Test suite() {
 		return new JUnit4TestAdapter(TestKMMSecID.class);
 	}
@@ -32,9 +33,11 @@ public class TestKMMSecID {
 	public void test01() throws Exception {
 		kmmID.set(1);
 		assertEquals("E000001", kmmID.get());
+		assertEquals("E000001", kmmID.toString());
 
 		kmmID.set(123);
 		assertEquals("E000123", kmmID.get());
+		assertEquals("E000123", kmmID.toString());
 	}
 
 	@Test
@@ -42,7 +45,7 @@ public class TestKMMSecID {
 		try {
 			kmmID.set(-12);
 			assertEquals(2, 1);
-		} catch (Exception InvalidKMMWPIDException) {
+		} catch (Exception InvalidKMMSecIDException) {
 			// Muss Exception werfen, wenn er hier landet, ist es richtig
 			assertEquals(1, 1);
 		}
@@ -53,7 +56,7 @@ public class TestKMMSecID {
 		try {
 			kmmID.set(1000000);
 			assertEquals(2, 1);
-		} catch (Exception InvalidKMMWPIDException) {
+		} catch (Exception InvalidKMMSecIDException) {
 			// Muss Exception werfen, wenn er hier landet, ist es richtig
 			assertEquals(1, 1);
 		}
