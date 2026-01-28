@@ -1,8 +1,9 @@
 package org.kmymoney.base.basetypes.complex;
 
 import java.util.Currency;
-import java.util.Locale;
 
+import org.kmymoney.base.basetypes.simple.KMMCurrID;
+import org.kmymoney.base.basetypes.simple.KMMIDNotSetException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +13,7 @@ public class KMMQualifCurrID extends KMMQualifSecCurrID {
 
 	// ---------------------------------------------------------------
 
-	private Currency curr;
+	private KMMCurrID currID;
 
 	// ---------------------------------------------------------------
 
@@ -30,7 +31,12 @@ public class KMMQualifCurrID extends KMMQualifSecCurrID {
 		init();
 		
 		setType(Type.CURRENCY);
-		setCurrency(curr);
+		try {
+			setCurrID(curr.getCurrencyCode());
+		} catch (KMMIDNotSetException e) {
+			LOGGER.error("KMMQualifCurrID: Currency ID cannot be set from '" + curr + "'");
+			throw new IllegalArgumentException("Currency ID cannot be set from '" + curr + "'");
+		}
 	}
 
 	public KMMQualifCurrID(String currStr) {
@@ -39,26 +45,35 @@ public class KMMQualifCurrID extends KMMQualifSecCurrID {
 		init();
 		
 		setType(Type.CURRENCY);
-		setCurrency(currStr);
+		try {
+			setCurrID(currStr);
+		} catch (KMMIDNotSetException e) {
+			LOGGER.error("KMMQualifCurrID: Currency ID cannot be set from '" + currStr + "'");
+			throw new IllegalArgumentException("Currency ID cannot be set from '" + currStr + "'");
+		}
 	}
 
-	public KMMQualifCurrID(KMMQualifSecCurrID secCurrID)
-			{
-		super(Type.CURRENCY, secCurrID.getCode());
+	public KMMQualifCurrID(KMMQualifSecCurrID secCurrID) {
+		super(secCurrID.getType(), secCurrID.getCode());
 
-		if ( getType() != Type.CURRENCY )
+		if ( secCurrID.getType() != Type.CURRENCY )
 			throw new InvalidQualifSecCurrTypeException();
 
 		init();
 		
 		setType(Type.CURRENCY);
-		setCurrency(code);
+		try {
+			setCurrID(code);
+		} catch (KMMIDNotSetException e) {
+			LOGGER.debug("KMMQualifCurrID: Could not set Currency-ID from '" + code + "'");
+			throw new IllegalArgumentException("Currency ID cannot be set from '" + code + "'");
+		}
 	}
 
 	// ---------------------------------------------------------------
 	
 	private void init() {
-		curr = Currency.getInstance(Locale.getDefault());
+		currID = new KMMCurrID();
 	}
 
 	// ---------------------------------------------------------------
@@ -73,36 +88,35 @@ public class KMMQualifCurrID extends KMMQualifSecCurrID {
 
     // ---------------------------------------------------------------
 
-	public Currency getCurrency() {
+	public KMMCurrID getCurrID() {
+    	if ( type != Type.CURRENCY )
+    		throw new InvalidQualifSecCurrTypeException();
+	
+		return currID;
+	}
+
+	public void setCurrID(KMMCurrID currID) {
 		if ( type != Type.CURRENCY )
 			throw new InvalidQualifSecCurrTypeException();
 
-		return curr;
+		if ( currID == null )
+			throw new IllegalArgumentException("Argument <currID> is null");
+
+		this.currID = currID;
 	}
 
-	public void setCurrency(Currency curr) {
-		if ( type != Type.CURRENCY )
-			throw new InvalidQualifSecCurrTypeException();
-
-		if ( curr == null )
-			throw new IllegalArgumentException("Argument currency is null");
-
-		setCode(curr.getCurrencyCode());
-		this.curr = curr;
-	}
-
-	public void setCurrency(String iso4217CurrCode) {
-		if ( iso4217CurrCode == null )
+	public void setCurrID(String currStr) throws KMMIDNotSetException {
+		if ( currStr == null )
 			throw new IllegalArgumentException("Argument string is null");
 
-		setCurrency(Currency.getInstance(iso4217CurrCode));
+		setCurrID(new KMMCurrID(currStr));
 	}
 
     // ---------------------------------------------------------------
     
     public void set(KMMQualifCurrID val) {
     	super.set(val);
-    	setCurrency(val.getCurrency());
+    	setCurrID(val.getCurrID());
     }
     
 	// ---------------------------------------------------------------
@@ -110,10 +124,10 @@ public class KMMQualifCurrID extends KMMQualifSecCurrID {
 	public static KMMQualifCurrID parse(String str)
 			throws InvalidQualifSecCurrIDException {
 		if ( str == null )
-			throw new IllegalArgumentException("Argument string is null");
+			throw new IllegalArgumentException("Argument <str> is null");
 
 		if ( str.equals("") )
-			throw new IllegalArgumentException("Argument string is empty");
+			throw new IllegalArgumentException("Argument <str> is empty");
 
 		KMMQualifCurrID result = new KMMQualifCurrID();
 
@@ -123,14 +137,18 @@ public class KMMQualifCurrID extends KMMQualifSecCurrID {
 			throw new InvalidQualifSecCurrIDException();
 
 		String typeStr = str.substring(0, posSep).trim();
-		String currStr = str.substring(posSep + 1, str.length()).trim();
+		String currCodeStr = str.substring(posSep + 1, str.length()).trim();
 
 		if ( typeStr.equals(Type.CURRENCY.toString()) ) {
 			result.setType(Type.CURRENCY);
-			result.setCode(currStr);
-			result.setCurrency(Currency.getInstance(currStr));
+			try {
+				result.setCurrID(currCodeStr);
+			} catch (KMMIDNotSetException e) {
+				LOGGER.error("parse: Cannot set KMMCurrID with code '" + currCodeStr + "'");
+				throw new InvalidQualifSecCurrIDException();
+			}
 		} else {
-			LOGGER.error("parse: Unknown security/currency type '" + typeStr + "'");
+			LOGGER.error("parse: Unknown currency type '" + typeStr + "'");
 			throw new InvalidQualifSecCurrTypeException();
 		}
 
@@ -143,7 +161,7 @@ public class KMMQualifCurrID extends KMMQualifSecCurrID {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((curr == null) ? 0 : curr.hashCode());
+		result = prime * result + ((currID == null) ? 0 : currID.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
@@ -159,10 +177,10 @@ public class KMMQualifCurrID extends KMMQualifSecCurrID {
 		KMMQualifCurrID other = (KMMQualifCurrID) obj;
 		if ( type != other.type )
 			return false;
-		if ( curr == null ) {
-			if ( other.curr != null )
+		if ( currID == null ) {
+			if ( other.currID != null )
 				return false;
-		} else if ( !curr.equals(other.curr) )
+		} else if ( !currID.equals(other.currID) )
 			return false;
 		return true;
 	}
@@ -180,7 +198,7 @@ public class KMMQualifCurrID extends KMMQualifSecCurrID {
 
 		String result = Type.CURRENCY.toString() + 
 						SEPARATOR + 
-						curr.getCurrencyCode();
+						currID.toString();
 
 		return result;
 	}
@@ -189,7 +207,7 @@ public class KMMQualifCurrID extends KMMQualifSecCurrID {
 		if ( type != Type.CURRENCY )
 			return "ERROR";
 
-    	return "KMMQualifCurrID [type=" + type + ", curr=" + curr.toString() + "]";
+    	return "KMMQualifCurrID [type=" + type + ", curr='" + currID.toString() + "']";
 	}
 
 }

@@ -87,7 +87,7 @@ public class KMMQualifSecCurrID {
 			throw new IllegalArgumentException("argument <curr> is empty");
 
 		setType(Type.CURRENCY);
-		setCode(curr.getSymbol());
+		setCode(curr.getCurrencyCode());
 	}
 
     // ---------------------------------------------------------------

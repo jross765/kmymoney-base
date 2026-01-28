@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Currency;
 
 import org.junit.Test;
+import org.kmymoney.base.basetypes.simple.KMMCurrID;
 
 import junit.framework.JUnit4TestAdapter;
 
@@ -22,26 +23,30 @@ public class TestKMMQualifCurrID {
 
 	@Test
 	public void test01() throws Exception {
-		KMMQualifCurrID secCurr = new KMMQualifCurrID(Currency.getInstance("EUR"));
+		KMMQualifCurrID currID = new KMMQualifCurrID(Currency.getInstance("EUR"));
 
-		assertEquals(KMMQualifCurrID.Type.CURRENCY, secCurr.getType());
-		assertEquals("EUR", secCurr.getCode());
-		assertEquals("EUR", secCurr.getCurrency().getCurrencyCode());
-		assertEquals("CURRENCY:EUR", secCurr.toString());
+		assertEquals(KMMQualifCurrID.Type.CURRENCY, currID.getType());
+		assertEquals(new KMMCurrID("EUR"), currID.getCurrID());
+		assertEquals(Currency.getInstance("EUR"), currID.getCurrID().get());
+		assertEquals("EUR", currID.getCurrID().get().getCurrencyCode());
+		assertEquals("EUR", currID.getCode());
+		assertEquals("CURRENCY:EUR", currID.toString());
 
 		// ---
 
-		secCurr = new KMMQualifCurrID(Currency.getInstance("USD"));
+		currID = new KMMQualifCurrID(Currency.getInstance("USD"));
 
-		assertEquals(KMMQualifCurrID.Type.CURRENCY, secCurr.getType());
-		assertEquals("USD", secCurr.getCode());
-		assertEquals("USD", secCurr.getCurrency().getCurrencyCode());
-		assertEquals("CURRENCY:USD", secCurr.toString());
+		assertEquals(KMMQualifCurrID.Type.CURRENCY, currID.getType());
+		assertEquals(new KMMCurrID("USD"), currID.getCurrID());
+		assertEquals(Currency.getInstance("USD"), currID.getCurrID().get());
+		assertEquals("USD", currID.getCurrID().get().getCurrencyCode());
+		assertEquals("USD", currID.getCode());
+		assertEquals("CURRENCY:USD", currID.toString());
 
 		// ---
 
 		try {
-			secCurr = new KMMQualifCurrID(Currency.getInstance("XYZ")); // invalid code
+			currID = new KMMQualifCurrID(Currency.getInstance("XYZ")); // invalid code
 			assertEquals(1, 0);
 		} catch (Exception exc) {
 			// correct behaviour: Throw exception
@@ -71,7 +76,8 @@ public class TestKMMQualifCurrID {
 	@Test
 	public void test04_2() throws Exception {
 		try {
-			KMMQualifCurrID secCurrPrs = KMMQualifCurrID.parse("EURONEXT:SAP");
+			KMMQualifCurrID secCurr = KMMQualifCurrID.parse("EURONEXT:SAP");
+			assertEquals(1, 0);
 		} catch (Exception exc) {
 			assertEquals(0, 0);
 		}
@@ -80,7 +86,8 @@ public class TestKMMQualifCurrID {
 	@Test
 	public void test04_3() throws Exception {
 		try {
-			KMMQualifCurrID secCurrPrs = KMMQualifCurrID.parse("FUXNSTUELL:BURP");
+			KMMQualifCurrID secCurr = KMMQualifCurrID.parse("FUXNSTUELL:BURP");
+			assertEquals(1, 0);
 		} catch (Exception exc) {
 			assertEquals(0, 0);
 		}
