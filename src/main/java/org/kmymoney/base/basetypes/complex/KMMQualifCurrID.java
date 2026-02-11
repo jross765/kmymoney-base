@@ -4,6 +4,7 @@ import java.util.Currency;
 
 import org.kmymoney.base.basetypes.simple.KMMCurrID;
 import org.kmymoney.base.basetypes.simple.KMMIDNotSetException;
+import org.kmymoney.base.basetypes.simple.KMMSecID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +24,12 @@ public class KMMQualifCurrID extends KMMQualifSecCurrID {
 		init();
 		
 		type = Type.CURRENCY;
+	}
+
+	public KMMQualifCurrID(KMMCurrID currID) {
+		super(currID);
+
+		init();
 	}
 
 	public KMMQualifCurrID(Currency curr) {
@@ -68,6 +75,12 @@ public class KMMQualifCurrID extends KMMQualifSecCurrID {
 			LOGGER.debug("KMMQualifCurrID: Could not set Currency-ID from '" + code + "'");
 			throw new IllegalArgumentException("Currency ID cannot be set from '" + code + "'");
 		}
+	}
+
+	public KMMQualifCurrID(KMMSecID secID) throws KMMIDNotSetException {
+		super(secID);
+
+		init();
 	}
 
 	// ---------------------------------------------------------------
