@@ -2,6 +2,7 @@ package org.kmymoney.base.basetypes.complex;
 
 import java.util.Currency;
 
+import org.kmymoney.base.basetypes.simple.KMMCurrID;
 import org.kmymoney.base.basetypes.simple.KMMIDNotSetException;
 import org.kmymoney.base.basetypes.simple.KMMSecID;
 import org.slf4j.Logger;
@@ -34,26 +35,14 @@ public class KMMQualifSecCurrID {
     }
 
 	public KMMQualifSecCurrID(Type type, String code) {
-
 		if ( code == null )
-			throw new IllegalArgumentException("Security code is null");
+			throw new IllegalArgumentException("argument <code> is null");
 
 		if ( code.trim().equals("") )
-			throw new IllegalArgumentException("Security code is empty");
+			throw new IllegalArgumentException("argument <code> is empty");
 
 		this.type = type;
 		setCode(code.trim());
-	}
-
-	public KMMQualifSecCurrID(KMMSecID secID) throws KMMIDNotSetException {
-		if ( secID == null )
-			throw new IllegalArgumentException("argument <secID> is null");
-
-		if ( ! secID.isSet() )
-			throw new IllegalArgumentException("argument <secID> is not set");
-
-		setType(Type.SECURITY);
-		setCode(secID.get());
 	}
 
 	public KMMQualifSecCurrID(KMMQualifSecID secID) throws KMMIDNotSetException {
@@ -67,6 +56,17 @@ public class KMMQualifSecCurrID {
 		setCode(secID.getCode());
 	}
 
+	public KMMQualifSecCurrID(KMMSecID secID) throws KMMIDNotSetException {
+		if ( secID == null )
+			throw new IllegalArgumentException("argument <secID> is null");
+
+		if ( ! secID.isSet() )
+			throw new IllegalArgumentException("argument <secID> is not set");
+
+		setType(Type.SECURITY);
+		setCode(secID.get());
+	}
+
 	public KMMQualifSecCurrID(KMMQualifCurrID currID) {
 		if ( currID == null )
 			throw new IllegalArgumentException("argument <currID> is null");
@@ -76,6 +76,17 @@ public class KMMQualifSecCurrID {
 
 		setType(Type.CURRENCY);
 		setCode(currID.getCode());
+	}
+
+	public KMMQualifSecCurrID(KMMCurrID currID) {
+		if ( currID == null )
+			throw new IllegalArgumentException("argument <currID> is null");
+
+		if ( ! currID.isSet() )
+			throw new IllegalArgumentException("argument <currID> is not set");
+
+		setType(Type.CURRENCY);
+		setCode(currID.get().toString());
 	}
 
 	public KMMQualifSecCurrID(Currency curr) {
