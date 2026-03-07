@@ -1,10 +1,9 @@
 package org.kmymoney.base.tuples;
 
+import org.apache.commons.numbers.fraction.BigFraction;
 import org.kmymoney.base.basetypes.simple.KMMAcctID;
 
-import xyz.schnorxoborx.base.numbers.FixedPointNumber;
-
-public record AcctIDAmountPair(KMMAcctID accountID, FixedPointNumber amount) {
+public record AcctIDAmountBFPair(KMMAcctID accountID, BigFraction amount) {
 	
 	private final static double UNSET_VALUE = -999999;
 	private final static int    SCALE       = 2;
@@ -29,7 +28,7 @@ public record AcctIDAmountPair(KMMAcctID accountID, FixedPointNumber amount) {
 	
 	@Override
 	public String toString() {
-		return "AcctIDAmountPair [accountID=" + accountID + 
+		return "AcctIDAmountBFPair [accountID=" + accountID + 
 								  ", amount=" + String.format("%." + SCALE + "f", amount.doubleValue() ) + "]";
 	}
 
