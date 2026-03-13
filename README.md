@@ -14,20 +14,39 @@ This might seem overly complicated, but in fact, it was necessary, because the a
 
 * Under normal circumstances, you cannot compile it on its own (at least not without further preparation), but instead, you should clone it together with the other repos and use the parent repo's build-script.
 
-* This repository contains no history before V. 1.7 (cf. notes in parent repo).
+* This repository contains no history before V. 0.8 (cf. notes in parent repo).
 
 ## Major Changes 
+### V. 0.8.1 &rarr; 0.9
+* Introduced `KMMCurrID` (as apposed to `KMMQualifCurrID`). Changed `KMMQualifCurrID` accordingly (class hierarchy/inclusion logic is now
+consistent with that of `KMMSecID`/`KMMQualifSecID`).
+
+  *Rationale*: Seen in the narrow context of this module, this 
+  provides no additional value -- neither does it in the context
+  of all this project's modules. However, it does make sense once 
+  you look at the big picture, i.e. *both* projects 
+  `JGnuCashLibNTools` and `JKMyMoneyLibNTools` and the symmetry
+  that I am trying to maintain between them.
+
+* Some minor improvements (more variants for constructors).
+
+### V. 0.8 &rarr; 0.8.1
+Only technical changes, essentially (i.e. code) unchanged.
+
 ### V. 0.7 &rarr; 0.8
-None (not in this module).
+No changes.
 
 ### V. 0.6 &rarr; 0.7
 * `KMMQualifSecID`: Fixed bug in method `parse()`
+
 * `KMMPriceID`: New method `getPricePairID()`
 
 ### V. 0.5 &rarr; 0.6
 * `FixedPointNumber`: Ironed out some inconsistencies: Some methods would change the (value of the) object itself, some others would not and instead generate a new one. Now, every calc-operation changes the (value of the) object itself. 
 
-  **CAUTION: This means that, as opposed to many (all?) other `number`-based Java classes, `FixedPointNumber` is *not* immutable.** Having it that way is, de facto, less of a *design* decision and more of a tribute to the *history* of the project `JGnuCashLib(NTools)` and `JKMyMoneyLibNTools` (and there are other things to say about this class, but let's not digress...).
+  **CAUTION: This means that, as opposed to many (all?) other `number`-based Java classes, `FixedPointNumber` is *not* immutable.** 
+  Having it that way is, de facto, less of a *design* decision and more of a tribute to the *history* of the projects `JGnuCashLib(NTools)` and `JKMyMoneyLibNTools`
+  (and there are other things to say about this class, but let's not digress...).
 
   This admittedly leads to less-than-beautiful code in the other modules, because you now have to use the method `copy()` a lot of times, but we had to do so before the changes anyway here and there, and at least it's consistent now.
 
