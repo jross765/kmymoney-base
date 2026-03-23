@@ -6,10 +6,13 @@ import java.util.Currency;
 import java.util.Objects;
 
 import org.kmymoney.base.Const;
+import org.kmymoney.base.basetypes.simple.InvalidKMMIDException;
 import org.kmymoney.base.basetypes.simple.KMMIDNotSetException;
 import org.kmymoney.base.basetypes.simple.KMMSecID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import xyz.schnorxoborx.base.dateutils.LocalDateHelpers;
 
 /**
  * KMyMoney has no IDs for the price objects (neither on the price-pair level
@@ -31,6 +34,7 @@ public class KMMPriceID {
 	private static final Logger LOGGER = LoggerFactory.getLogger(KMMPriceID.class);
 
     protected static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern(Const.STANDARD_DATE_FORMAT);
+    private   static final char SEPARATOR = ':';
     
     // -----------------------------------------------------------
 
@@ -219,6 +223,52 @@ public class KMMPriceID {
 	}
 
     // ---------------------------------------------------------------
+    
+	public static KMMPriceID parse(String str) throws Exception {
+		if ( str == null )
+			throw new IllegalArgumentException("argument <str> is null");
+
+		if ( str.equals("") )
+			throw new IllegalArgumentException("argument <str> is empty");
+
+		int posSep1 = str.indexOf(SEPARATOR);
+		// Plausi ::MAGIC
+		if ( posSep1 < 3 || posSep1 >= str.length() - 2 )
+			throw new InvalidKMMIDException();
+
+		int posSep2 = str.substring(posSep1 + 1).indexOf(SEPARATOR);
+		posSep2 += posSep1 + 1; // sic
+		// Plausi ::MAGIC
+		if ( posSep2 - posSep1 - 1 != 3 )
+			throw new InvalidKMMIDException();
+
+		String fromSecCurrStrLoc = str.substring(0, posSep1).trim();
+		String toCurrStrLoc      = str.substring(posSep1 + 1, posSep2).trim();
+		String dateStrLoc        = str.substring(posSep2 + 1, str.length()).trim();
+		
+//		System.err.println("pp1: '" + fromSecCurrStrLoc + "'");
+//		System.err.println("pp2: '" + toCurrStrLoc + "'");
+//		System.err.println("pp3: '" + dateStrLoc + "'");
+		
+		KMMQualifSecCurrID fromSecCurrID = new KMMQualifSecCurrID();
+		if ( fromSecCurrStrLoc.startsWith(KMMQualifSecCurrID.PREFIX_SECURITY) ) {
+			fromSecCurrID.setType(KMMQualifSecCurrID.Type.SECURITY);
+		} else {
+			fromSecCurrID.setType(KMMQualifSecCurrID.Type.CURRENCY);
+		}
+		
+		fromSecCurrID.setCode(fromSecCurrStrLoc);
+		
+		KMMQualifCurrID toCurrID = new KMMQualifCurrID(toCurrStrLoc);
+		
+		LocalDate date = LocalDateHelpers.parseLocalDate(dateStrLoc);
+		
+		KMMPriceID result = new KMMPriceID(fromSecCurrID, toCurrID, date);
+
+		return result;
+	}
+    
+    // ---------------------------------------------------------------
 
     @Override
     public int hashCode() {
@@ -247,7 +297,7 @@ public class KMMPriceID {
     }
         
     public String toStringShort() {
-	return fromSecCurr + ";" + toCurr + ";" + dateStr;
+	return fromSecCurr + SEPARATOR + toCurr + SEPARATOR + dateStr;
     }
         
     public String toStringLong() {

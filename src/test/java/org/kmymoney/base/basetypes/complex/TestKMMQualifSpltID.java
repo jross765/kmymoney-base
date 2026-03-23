@@ -62,4 +62,11 @@ public class TestKMMQualifSpltID {
 		}
 	}
 
+	@Test
+	public void test03() throws Exception {
+		KMMQualifSpltID qualifID = KMMQualifSpltID.parse("T000000000000000001:S0001");
+		assertEquals("T000000000000000001", qualifID.getTransactionID().toString());
+		assertEquals("S0001",               qualifID.getSplitID().toString());
+	}
+
 }

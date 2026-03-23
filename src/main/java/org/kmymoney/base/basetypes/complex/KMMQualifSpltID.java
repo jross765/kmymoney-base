@@ -2,6 +2,7 @@ package org.kmymoney.base.basetypes.complex;
 
 import java.util.Objects;
 
+import org.kmymoney.base.basetypes.simple.InvalidKMMIDException;
 import org.kmymoney.base.basetypes.simple.KMMSpltID;
 import org.kmymoney.base.basetypes.simple.KMMTrxID;
 import org.slf4j.Logger;
@@ -19,6 +20,8 @@ public class KMMQualifSpltID {
     @SuppressWarnings("unused")
 	private static final Logger LOGGER = LoggerFactory.getLogger(KMMQualifSpltID.class);
 
+    private   static final char SEPARATOR = ':';
+    
     // ---------------------------------------------------------------
 
     private KMMTrxID  trxID;
@@ -81,6 +84,31 @@ public class KMMQualifSpltID {
     }
 
     // ---------------------------------------------------------------
+    
+	public static KMMQualifSpltID parse(String str) throws Exception {
+		if ( str == null )
+			throw new IllegalArgumentException("argument <str> is null");
+
+		if ( str.equals("") )
+			throw new IllegalArgumentException("argument <str> is empty");
+
+		int posSep1 = str.indexOf(SEPARATOR);
+		// Plausi ::MAGIC
+		if ( posSep1 <= 3 || posSep1 >= str.length() - 2 )
+			throw new InvalidKMMIDException();
+
+		String trxStrLoc  = str.substring(0, posSep1).trim();
+		String spltStrLoc = str.substring(posSep1 + 1).trim();
+		
+		KMMTrxID  trxID  = new KMMTrxID(trxStrLoc);
+		KMMSpltID spltID = new KMMSpltID(spltStrLoc);
+		
+		KMMQualifSpltID result = new KMMQualifSpltID(trxID, spltID);
+
+		return result;
+	}
+    
+    // ---------------------------------------------------------------
 
     @Override
     public int hashCode() {
@@ -108,7 +136,7 @@ public class KMMQualifSpltID {
     }
 
     public String toStringShort() {
-	return trxID + ":" + spltID;
+	return trxID.toString() + SEPARATOR + spltID.toString();
     }
 
     public String toStringLong() {
