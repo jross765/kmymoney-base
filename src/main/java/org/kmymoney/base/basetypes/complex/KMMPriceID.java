@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import org.kmymoney.base.Const;
 import org.kmymoney.base.basetypes.simple.InvalidKMMIDException;
+import org.kmymoney.base.basetypes.simple.KMMCurrID;
 import org.kmymoney.base.basetypes.simple.KMMIDNotSetException;
 import org.kmymoney.base.basetypes.simple.KMMSecID;
 import org.slf4j.Logger;
@@ -43,6 +44,14 @@ public class KMMPriceID {
     protected String dateStr;
     
     // ---------------------------------------------------------------
+
+	public KMMPriceID() {
+		init();
+		
+		this.fromSecCurr = "(unset)";
+		this.toCurr = "(unset)";
+		this.dateStr = "(unset)";
+	}
 
 	public KMMPriceID(String fromSecCurr, String toCurr, String dateStr) {
 		init();
@@ -129,6 +138,14 @@ public class KMMPriceID {
         setFromSecCurr(fromSecID.get());
     }
 
+    public void setFromCurrID(KMMCurrID fromCurrID) throws KMMIDNotSetException {
+    	if ( fromCurrID == null ) {
+    		throw new IllegalArgumentException("null fromCurrID given");
+    	}
+    	
+        setFromCurr(fromCurrID.get());
+    }
+
     public void setFromCurr(Currency fromCurr) throws KMMIDNotSetException {
     	if ( fromCurr == null ) {
     		throw new IllegalArgumentException("null currency given");
@@ -163,6 +180,14 @@ public class KMMPriceID {
     	}
     	
         setToCurr(toCurr.getCode());
+    }
+
+    public void setToCurr(KMMCurrID toCurr) throws KMMIDNotSetException {
+    	if ( toCurr == null ) {
+    		throw new IllegalArgumentException("null currency-ID given");
+    	}
+    	
+        setToCurr(toCurr.get());
     }
 
     public void setToCurr(Currency toCurr) throws KMMIDNotSetException {

@@ -24,6 +24,8 @@ public class KMMPricePairID {
     @SuppressWarnings("unused")
 	private static final Logger LOGGER = LoggerFactory.getLogger(KMMPricePairID.class);
 
+    private   static final char SEPARATOR = ':';
+
     // ---------------------------------------------------------------
 
     private KMMQualifSecCurrID fromSecCurr;
@@ -225,7 +227,7 @@ public class KMMPricePairID {
 	}
 
 	public String toStringShort() {
-		return fromSecCurr.getCode() + ";" + toCurr.getCode();
+		return fromSecCurr.getCode() + SEPARATOR + toCurr.getCode();
 	}
 
 	public String toStringLong() {

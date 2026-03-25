@@ -116,6 +116,7 @@ public class KMMQualifCurrID extends KMMQualifSecCurrID {
 			throw new IllegalArgumentException("Argument <currID> is null");
 
 		this.currID = currID;
+		this.code   = currID.get().getCurrencyCode();
 	}
 
 	public void setCurrID(String currStr) throws KMMIDNotSetException {
