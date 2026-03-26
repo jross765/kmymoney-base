@@ -27,12 +27,12 @@ import xyz.schnorxoborx.base.dateutils.LocalDateHelpers;
  * or, alternatively:
  * The tuple ( (ID of parent price-pair object), date ).
  *
- * @see KMMPricePairID
+ * @see KMMPrcPrID
  */
-public class KMMPriceID {
+public class KMMPrcID {
     
     @SuppressWarnings("unused")
-	private static final Logger LOGGER = LoggerFactory.getLogger(KMMPriceID.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(KMMPrcID.class);
 
     protected static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern(Const.STANDARD_DATE_FORMAT);
     private   static final char SEPARATOR = ':';
@@ -45,7 +45,7 @@ public class KMMPriceID {
     
     // ---------------------------------------------------------------
 
-	public KMMPriceID() {
+	public KMMPrcID() {
 		init();
 		
 		this.fromSecCurr = "(unset)";
@@ -53,7 +53,7 @@ public class KMMPriceID {
 		this.dateStr = "(unset)";
 	}
 
-	public KMMPriceID(String fromSecCurr, String toCurr, String dateStr) {
+	public KMMPrcID(String fromSecCurr, String toCurr, String dateStr) {
 		init();
 		
 		this.fromSecCurr = fromSecCurr;
@@ -61,7 +61,7 @@ public class KMMPriceID {
 		this.dateStr = dateStr;
 	}
 
-	public KMMPriceID(KMMQualifSecCurrID fromSecCurr, KMMQualifCurrID toCurr, LocalDate date) {
+	public KMMPrcID(KMMQualifSecCurrID fromSecCurr, KMMQualifCurrID toCurr, LocalDate date) {
 		init();
 		
 		this.fromSecCurr = fromSecCurr.getCode();
@@ -69,7 +69,7 @@ public class KMMPriceID {
 		this.dateStr = DATE_FORMAT.format(date);
 	}
     
-	public KMMPriceID(KMMPricePairID prcPr, LocalDate date) {
+	public KMMPrcID(KMMPrcPrID prcPr, LocalDate date) {
 		init();
 		
 		this.fromSecCurr = prcPr.getFromSecCurr().getCode();
@@ -235,7 +235,7 @@ public class KMMPriceID {
     
     // ----------------------------
 
-	public void set(KMMPriceID id) {
+	public void set(KMMPrcID id) {
 		setFromSecCurr(id.getFromSecCurr());
 		setToCurr(id.getToCurr());
 		setDateStr(id.getDateStr());
@@ -243,13 +243,13 @@ public class KMMPriceID {
         
     // ---------------------------------------------------------------
 	
-	public KMMPricePairID getPricePairID() {
-		return new KMMPricePairID(getFromSecCurr(), getToCurr());
+	public KMMPrcPrID getPricePairID() {
+		return new KMMPrcPrID(getFromSecCurr(), getToCurr());
 	}
 
     // ---------------------------------------------------------------
     
-	public static KMMPriceID parse(String str) throws Exception {
+	public static KMMPrcID parse(String str) throws Exception {
 		if ( str == null )
 			throw new IllegalArgumentException("argument <str> is null");
 
@@ -288,7 +288,7 @@ public class KMMPriceID {
 		
 		LocalDate date = LocalDateHelpers.parseLocalDate(dateStrLoc);
 		
-		KMMPriceID result = new KMMPriceID(fromSecCurrID, toCurrID, date);
+		KMMPrcID result = new KMMPrcID(fromSecCurrID, toCurrID, date);
 
 		return result;
 	}
@@ -305,10 +305,10 @@ public class KMMPriceID {
 	if (this == obj) {
 	    return true;
 	}
-	if (!(obj instanceof KMMPriceID)) {
+	if (!(obj instanceof KMMPrcID)) {
 	    return false;
 	}
-	KMMPriceID other = (KMMPriceID) obj;
+	KMMPrcID other = (KMMPrcID) obj;
 	return Objects.equals(dateStr, other.dateStr) && 
 	       Objects.equals(fromSecCurr, other.fromSecCurr) && 
 	       Objects.equals(toCurr, other.toCurr);

@@ -17,12 +17,12 @@ import org.slf4j.LoggerFactory;
  * Anyway: this fact is the reason why we here have pseudo-ID for a price-pair object: 
  * The tuple ( from-currency, to-currency ).
  *
- * @see KMMPriceID
+ * @see KMMPrcID
  */
-public class KMMPricePairID {
+public class KMMPrcPrID {
     
     @SuppressWarnings("unused")
-	private static final Logger LOGGER = LoggerFactory.getLogger(KMMPricePairID.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(KMMPrcPrID.class);
 
     private   static final char SEPARATOR = ':';
 
@@ -33,7 +33,7 @@ public class KMMPricePairID {
     
     // ---------------------------------------------------------------
 
-	public KMMPricePairID(KMMQualifSecCurrID fromSecCurr, KMMQualifCurrID toCurr) {
+	public KMMPrcPrID(KMMQualifSecCurrID fromSecCurr, KMMQualifCurrID toCurr) {
 		if ( fromSecCurr == null ) {
 			throw new IllegalArgumentException("null from-security-currency-ID given");
 		}
@@ -48,7 +48,7 @@ public class KMMPricePairID {
 		this.toCurr.set(toCurr);
 	}
 
-	public KMMPricePairID(KMMQualifSecID fromSec, KMMQualifCurrID toCurr) {
+	public KMMPrcPrID(KMMQualifSecID fromSec, KMMQualifCurrID toCurr) {
 		if ( fromSec == null ) {
 			throw new IllegalArgumentException("null from-security-currency-ID given");
 		}
@@ -63,7 +63,7 @@ public class KMMPricePairID {
 		this.toCurr.set(toCurr);
 	}
 
-	public KMMPricePairID(KMMQualifCurrID fromCurr, KMMQualifCurrID toCurr) {
+	public KMMPrcPrID(KMMQualifCurrID fromCurr, KMMQualifCurrID toCurr) {
 		if ( fromCurr == null ) {
 			throw new IllegalArgumentException("null from-security-currency-ID given");
 		}
@@ -78,7 +78,7 @@ public class KMMPricePairID {
 		this.toCurr.set(toCurr);
 	}
 
-	public KMMPricePairID(KMMSecID fromSec, KMMQualifCurrID toCurr) {
+	public KMMPrcPrID(KMMSecID fromSec, KMMQualifCurrID toCurr) {
 		if ( fromSec == null ) {
 			throw new IllegalArgumentException("null from-security-currency-ID given");
 		}
@@ -94,7 +94,7 @@ public class KMMPricePairID {
 		this.toCurr.set(toCurr);
 	}
 
-	public KMMPricePairID(Currency fromCurr, KMMQualifCurrID toCurr) {
+	public KMMPrcPrID(Currency fromCurr, KMMQualifCurrID toCurr) {
 		if ( fromCurr == null ) {
 			throw new IllegalArgumentException("null from-security-currency-ID given");
 		}
@@ -110,7 +110,7 @@ public class KMMPricePairID {
 		this.toCurr.set(toCurr);
 	}
 
-	public KMMPricePairID(String fromSecCurr, String toCurr)
+	public KMMPrcPrID(String fromSecCurr, String toCurr)
 			throws InvalidQualifSecCurrIDException {
 		if ( fromSecCurr == null ) {
 			throw new IllegalArgumentException("null from-security-currency-ID given");
@@ -185,7 +185,7 @@ public class KMMPricePairID {
 
     // ---------------------------------------------------------------
     
-    public void set(KMMPricePairID prcPrID) {
+    public void set(KMMPrcPrID prcPrID) {
 		if ( prcPrID == null ) {
 			throw new IllegalArgumentException("null price-pair-ID given");
 		}
@@ -211,10 +211,10 @@ public class KMMPricePairID {
 		if ( this == obj ) {
 			return true;
 		}
-		if ( !(obj instanceof KMMPricePairID) ) {
+		if ( !(obj instanceof KMMPrcPrID) ) {
 			return false;
 		}
-		KMMPricePairID other = (KMMPricePairID) obj;
+		KMMPrcPrID other = (KMMPrcPrID) obj;
 		return Objects.equals(fromSecCurr.toString(), other.getFromSecCurr().toString()) && // <-- important: toString()!
 			   Objects.equals(toCurr.toString(),      other.getToCurr().toString());        // <-- here optional: toString()!
 	}
