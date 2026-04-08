@@ -120,8 +120,8 @@ public class KMMQualifSecID extends KMMQualifSecCurrID {
 		if ( str == null )
 			throw new IllegalArgumentException("Argument <str> is null");
 
-		if ( str.equals("") )
-			throw new IllegalArgumentException("Argument <str> is empty");
+		if ( str.isBlank() )
+			throw new IllegalArgumentException("Argument <str> is blank");
 
 		KMMQualifSecID result = new KMMQualifSecID();
 

@@ -117,7 +117,7 @@ public class KMMComplAcctID implements Comparable<KMMComplAcctID> {
     	else if ( type == Type.STANDARD )
     		return stdID.isSet();
     	else if ( type == Type.SPECIAL )
-    		return ! specID.trim().equals("");
+    		return ! specID.isBlank();
     	
 		return true; // Compiler happy
     }

@@ -86,7 +86,7 @@ public class KMMCurrID /* NOT POSSIBLE: extends Currency */ {
 	// ---------------------------------------------------------------
     
     public boolean isSet() {
-    	return ! curr.toString().equals("");
+    	return ! curr.toString().isBlank();
     }
 
 	// ---------------------------------------------------------------

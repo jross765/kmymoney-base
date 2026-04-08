@@ -84,17 +84,17 @@ public class KMMPrcID {
 	}
 
 	public boolean isSet() {
-		if ( fromSecCurr.trim().equals("") ||
+		if ( fromSecCurr.isBlank() ||
 			 fromSecCurr.equals("(unset)") ) {
 			return false;
 		}
 		
-		if ( toCurr.trim().equals("") ||
+		if ( toCurr.isBlank() ||
 			 toCurr.equals("(unset)") ) {
 			return false;
 		}
 			
-		if ( dateStr.trim().equals("") ||
+		if ( dateStr.isBlank() ||
 			 dateStr.equals("(unset)") ) {
 			return false;
 		}
@@ -253,8 +253,8 @@ public class KMMPrcID {
 		if ( str == null )
 			throw new IllegalArgumentException("argument <str> is null");
 
-		if ( str.equals("") )
-			throw new IllegalArgumentException("argument <str> is empty");
+		if ( str.isBlank() )
+			throw new IllegalArgumentException("argument <str> is blank");
 
 		int posSep1 = str.indexOf(SEPARATOR);
 		// Plausi ::MAGIC

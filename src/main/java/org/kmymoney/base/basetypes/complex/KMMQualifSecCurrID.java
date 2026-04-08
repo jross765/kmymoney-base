@@ -38,8 +38,8 @@ public class KMMQualifSecCurrID {
 		if ( code == null )
 			throw new IllegalArgumentException("argument <code> is null");
 
-		if ( code.trim().equals("") )
-			throw new IllegalArgumentException("argument <code> is empty");
+		if ( code.isBlank() )
+			throw new IllegalArgumentException("argument <code> is blank");
 
 		this.type = type;
 		setCode(code.trim());
@@ -94,8 +94,8 @@ public class KMMQualifSecCurrID {
 		if ( curr == null )
 			throw new IllegalArgumentException("argument <curr> is null");
 
-		if ( curr.getSymbol().equals("") )
-			throw new IllegalArgumentException("argument <curr> is empty");
+		if ( curr.getSymbol().isBlank() )
+			throw new IllegalArgumentException("argument <curr> is blank");
 
 		setType(Type.CURRENCY);
 		setCode(curr.getCurrencyCode());
@@ -105,7 +105,7 @@ public class KMMQualifSecCurrID {
 	
 	public boolean isSet() {
 		return ( this.type != Type.UNSET && 
-				 ! this.code.trim().equals("") );
+				 ! this.code.isBlank() );
 	}
 
 	public void reset() {
@@ -131,8 +131,8 @@ public class KMMQualifSecCurrID {
     	if ( secCode == null )
     		throw new IllegalArgumentException("Security code is null");
 
-    	if ( secCode.trim().equals("") )
-    		throw new IllegalArgumentException("Security code is empty");
+    	if ( secCode.isBlank() )
+    		throw new IllegalArgumentException("Security code is blank");
 
         this.code = secCode.trim();
     }
@@ -151,8 +151,8 @@ public class KMMQualifSecCurrID {
 		if ( str == null )
 			throw new IllegalArgumentException("Argument string is null");
 
-		if ( str.equals("") )
-			throw new IllegalArgumentException("Argument string is empty");
+		if ( str.isBlank() )
+			throw new IllegalArgumentException("Argument string is blank");
 
 		KMMQualifSecCurrID result = new KMMQualifSecCurrID();
 
